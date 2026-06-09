@@ -1,47 +1,29 @@
 package br.com.ebac.memelandia.controllers;
 
-import br.com.ebac.memelandia.entities.CategoriaMeme;
-import br.com.ebac.memelandia.entities.Meme;
-import br.com.ebac.memelandia.entities.Usuario;
+import br.com.ebac.memelandia.feign.UserServiceClient;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import br.com.ebac.memelandia.services.ServicoMemelandia;
 
-import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/memelandia")
 public class ControllerMemelandia {
-    @Autowired
-    private ServicoMemelandia servicoMemelandia;
 
-    @GetMapping("/usuarios")
-    public List<Usuario> buscaUsuarios() {
-        return servicoMemelandia.listaTodosUsuarios();
-    }
+    @Autowired
+    private UserServiceClient userServiceClient;
 
     @PostMapping("/usuarios")
-    public Usuario novoUsuario(@RequestBody Usuario usuario) {
-        return servicoMemelandia.novoUsuario(usuario);
-    }
-
-    @GetMapping("/categorias")
-    public List<CategoriaMeme> buscaCategorias() {
-        return servicoMemelandia.listaTodasCategorias();
-    }
-
-    @PostMapping("/categorias")
-    public CategoriaMeme novaCategoria(@RequestBody CategoriaMeme categoriaMeme) {
-        return servicoMemelandia.novaCategoriaMeme(categoriaMeme);
-    }
-
-    @GetMapping("/memes")
-    public List<Meme> buscaMemes() {
-        return servicoMemelandia.listaTodosMemes();
-    }
-
-    @PostMapping("/memes")
-    public Meme novoMeme(@RequestBody Meme meme) {
-        return servicoMemelandia.novoMeme(meme);
+    public ResponseEntity<?> cadastrarUsuario(@RequestBody Map<String, Object> dadosUsuario){
+        try {
+            Map<String, Object> usuarioCriado = userServiceClient.encaminharCadastroUsuario(dadosUsuario);
+            return ResponseEntity.status(HttpStatus.CREATED)
+                    .body(usuarioCriado);
+        }catch (Exception e){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body("Erro ao delegar cadastro para user-service!");
+        }
     }
 }

@@ -1,7 +1,6 @@
 package br.com.pferreira.controllers;
 
 import br.com.pferreira.entities.Meme;
-import br.com.pferreira.repositories.RepositorioMeme;
 import br.com.pferreira.services.ServicoMeme;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

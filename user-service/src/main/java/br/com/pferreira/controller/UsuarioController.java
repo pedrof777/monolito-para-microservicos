@@ -1,7 +1,6 @@
 package br.com.pferreira.controller;
 
 import br.com.pferreira.entities.Usuario;
-import br.com.pferreira.repositories.RepositorioUsuario;
 import br.com.pferreira.services.ServicoUsuario;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
